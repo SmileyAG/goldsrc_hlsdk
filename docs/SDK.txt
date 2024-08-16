@@ -1,6 +1,6 @@
-Half-Life Standard SDK 2.1:
+Half-Life Standard SDK 2.2:
 
-Questions about the SDK should be sent to het3@valvesoftware.com.
+Questions about the SDK should be sent to sdk@valvesoftware.com.
 
 Contents:
 
@@ -9,6 +9,8 @@ Documentation:
 PortingTips.doc contains guidelines and descriptions of file differences between version 1.0 and version 2.0 of the SDK
 Events.doc contains documentation on the event system.
 How to make a mod.doc contains documentation on how to set up the liblist.gam file and how to change the launcher UI for your mod.
+HLVoice.doc contains documentation on how to implement voice in a mod.
+HLTV.doc contains documentation on how to implement HLTV in a mod.
 Input.doc contains documentation on the mouse, keyboard and joystick handling system of the client.dll
 Netgraph.doc explains how to read the new netgraph.
 NetworkEntity.doc explains how to use the new entity filtering/handling functions of the game and client dlls.

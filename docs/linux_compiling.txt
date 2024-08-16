@@ -1,4 +1,4 @@
-HL SDK 2.1
+HL SDK 2.2
 
 Linux compile notes
 -------------------
