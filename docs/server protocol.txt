@@ -26,7 +26,10 @@ Game servers will answer the following messages:
 Messages are sent to the server by sending 4 consecutive bytes of 255 (32-bit integer -1) and then the string command followed by a zero byte to terminate it
 
 "ping"
-	Server responds with a single byte code ASCII 'j'
+	Server responds with the following packet:
+	(int32)		-1
+	(byte)		ASCII 'j' (general acknowledgement, A2A_ACK)
+	(byte)		0
 
 "info"
 	Server responds with the following packet:
@@ -39,7 +42,7 @@ Messages are sent to the server by sending 4 consecutive bytes of 255 (32-bit in
 	(string)		Game description (e.g. "half-life multiplay")
 	(byte)		active client count
 	(byte)		maximum clients allowed
-	(byte)		protocol version (currently 7)
+	(byte)		protocol version
 
 "players"
 	Server responds with the following packet:
@@ -100,7 +103,7 @@ Here are both the old and new protocols ( the new one is the "details" message )
 	(string)		Game description (e.g. "half-life multiplay")
 	(byte)		active client count
 	(byte)		maximum clients allowed
-	(byte)		protocol version (currently 37)
+	(byte)		protocol version
 
 "details"
 	(int32)    		-1
@@ -112,7 +115,7 @@ Here are both the old and new protocols ( the new one is the "details" message )
 	(string)		Game description (e.g. "half-life multiplay")
 	(byte)		active client count
 	(byte)		maximum clients allowed
-	(byte)		protocol version (currently 37)
+	(byte)		protocol version
 	(byte)		type of server == 'l' for listen or 'd' for dedicated
 	(byte)		os of server == 'w' for win32 or 'l' for linux
 	(byte)		password on server == 1 or yes, 0, for no
@@ -122,11 +125,19 @@ Here are both the old and new protocols ( the new one is the "details" message )
 
 	(string)		URL for mod's "info" website
 	(string)		URL for mod's download ftp server
+	(string)		Empty string, unused (used to be HL version)
 	(int32)		mod version #
 	(int32)		mod download size ( in bytes, approx. )
 	(byte)		is the mod a server side only mod?  1 == yes, 0 == no
 	(byte)		does this server require you to have a custom client side .dll ( client.dll )?  1 == yes, 0 == no.
 
+	Protocol extension (SDK 2.3), sent whether or not the mod byte is 0 or 1
+	(byte)		server is a secure server == 1 for yes, 0 for no
+
+"infostring" (SDK 2.3)
+	(int32)    		-1
+	(string)		"infostringresponse"
+	(string)		string containing key/value pairs delimited by the '\' character.
 
 
 Here is some code that uses the new protocol.  The first function starts the protocol and the second services the message and requests more ip addresses:
