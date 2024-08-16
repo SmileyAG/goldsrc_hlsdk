@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    paths-ignore:
+     - 'README.md'
+  pull_request:
+    paths-ignore:
+     - 'README.md'
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 1 * *' # Monthly
+
+jobs:
+  win32:
+    name: Win32
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Install Visual C++ 6.0
+      run: |
+        git clone --depth 1 https://github.com/SmileyAG/MSVC60
+    - name: Build
+      shell: cmd
+      run: |
+        call MSVC60/vc_studio/main/VC98/Bin/VCVars32.bat
+        msdev src/cl_dll/cl_dll.dsp /make "cl_dll - Win32 Release"
+        msdev src/cl_dll/cl_dll.dsp /make "cl_dll - Win32 Debug"
+        msdev src/dlls/hl.dsp /make "hl - Win32 Release"
+        msdev src/dlls/hl.dsp /make "hl - Win32 Debug"
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: Win32
+        path: |
+          src/cl_dll/Release/client.dll
+          src/cl_dll/Release/client.pdb
+          src/cl_dll/Debug/client.dll
+          src/cl_dll/Debug/client.pdb
+          src/dlls/Releasehl/hl.dll
+          src/dlls/Releasehl/hl.pdb
+          src/dlls/debughl/hl.dll
+          src/dlls/debughl/hl.pdb
