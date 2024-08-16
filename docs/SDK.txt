@@ -1,4 +1,4 @@
-Half-Life Standard SDK 2.0:
+Half-Life Standard SDK 2.1:
 
 Questions about the SDK should be sent to het3@valvesoftware.com.
 

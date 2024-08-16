@@ -410,6 +410,14 @@ void CGauss::Fire( Vector vecOrigSrc, Vector vecDir, float flDamage )
 
 	pentIgnore = ENT( m_pPlayer->pev );
 
+	// The main firing event is sent unreliably so it won't be delayed.
+	PLAYBACK_EVENT_FULL( 0, m_pPlayer->edict(), m_usGaussFire, 0.0, (float *)&g_vecZero, (float *)&g_vecZero, flDamage, 0.0, 0, 0, m_fPrimaryFire ? 1 : 0, 0 );
+
+	// This reliable event is used to stop the spinning sound
+	// It's delayed by a fraction of second to make sure it is delayed by 1 frame on the client
+	// It's sent reliably anyway, which could lead to other delays
+	PLAYBACK_EVENT_FULL( FEV_RELIABLE, m_pPlayer->edict(), m_usGaussFire, 0.01, (float *)&g_vecZero, (float *)&g_vecZero, 0.0, 0.0, 0, 0, 0, 1 );
+
 	/*
 	ALERT( at_console, "%f %f %f\n%f %f %f\n", 
 		vecSrc.x, vecSrc.y, vecSrc.z, 
@@ -417,9 +425,6 @@ void CGauss::Fire( Vector vecOrigSrc, Vector vecDir, float flDamage )
 	*/
 
 	// ALERT( at_console, "%f %f\n", tr.flFraction, flMaxFrac );
-
-	// Pass in correct values here
-	PLAYBACK_EVENT_FULL( FEV_RELIABLE, m_pPlayer->edict(), m_usGaussFire, 0.0, (float *)&g_vecZero, (float *)&g_vecZero, flDamage, 0.0, 0, 0, m_fPrimaryFire ? 1 : 0, 0 );
 
 	while (flDamage > 10 && nMaxHits > 0)
 	{

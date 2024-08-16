@@ -843,6 +843,14 @@ void CBasePlayer::Killed( entvars_t *pevAttacker, int iGib )
 {
 	CSound *pSound;
 
+	#ifdef PERSISTENCE_SAMPLE
+		// PERSISTENCE_TODO:
+		// Log other changes to the player's persistence info like this.
+
+		// Update the persistence database.
+		m_PersistenceInfo.IncField_PlayerInfo_NumKills();
+	#endif
+
 	g_pGameRules->PlayerKilled( this, pevAttacker, g_pevLastInflictor );
 
 	if ( m_pTank != NULL )
@@ -1987,6 +1995,10 @@ void CBasePlayer :: UpdateStepSound( void )
 void CBasePlayer::PreThink(void)
 {
 	int buttonsChanged = (m_afButtonLast ^ pev->button);	// These buttons have changed this frame
+
+	#ifdef PERSISTENCE_SAMPLE
+		m_PersistenceInfo.Update();
+	#endif
 	
 	// Debounced button codes for pressed/released
 	// UNDONE: Do we need auto-repeat?
@@ -3061,6 +3073,12 @@ void CBasePlayer::Spawn( void )
 	m_lastx = m_lasty = 0;
 
 	g_pGameRules->PlayerSpawn( this );
+
+	#ifdef PERSISTENCE_SAMPLE
+		// Start getting their persistence data.
+		// (Only does it the first time they spawn).
+		m_PersistenceInfo.StartGettingInfo(g_engfuncs.pfnGetPlayerWONId(pev->pContainingEntity));
+	#endif
 }
 
 

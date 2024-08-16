@@ -435,6 +435,16 @@ void ServerDeactivate( void )
 
 	// Peform any shutdown operations here...
 	//
+	#ifdef PERSISTENCE_SAMPLE
+		for ( int i = 1; i <= gpGlobals->maxClients; i++ )
+		{
+			CBasePlayer *pPlayer = (CBasePlayer*)UTIL_PlayerByIndex( i );
+			if(pPlayer && pPlayer->IsPlayer())
+			{
+				pPlayer->m_PersistenceInfo.SendInfo();
+			}
+		}
+	#endif
 }
 
 void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )

@@ -1,9 +1,9 @@
-HL SDK 2.0
+HL SDK 2.1
 
 Linux compile notes
 -------------------
 
-The source code distributed with the HL SDK 2.0 contains two
+The source code distributed with the HL SDK 2.1 contains two
 portions that may be compiled under Linux: the game DLL and the
 server launcher.  The game DLL code is located in the dlls/
 directory and the server launcher code is located in the
